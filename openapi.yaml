@@ -1,0 +1,144 @@
+# =============================================================================
+# OpenAPI spec for a tiny Todo API
+#
+# This file DESCRIBES an API: what endpoints exist, what they accept, and what
+# they return. It does not implement anything. Tools read it and generate code:
+#   - Orval reads it (via orval.config.ts) and writes typed TanStack Query
+#     hooks + MSW mock handlers into src/api/.
+#   - MSW then pretends to be this API in the browser, so no real server is
+#     needed.
+#
+# Comments (lines starting with #) are for humans only; tools ignore them.
+# Text you want to show up in generated code / docs goes in `summary` or
+# `description` fields instead.
+# =============================================================================
+
+# Which version of the OpenAPI format this file uses. 3.0.x is the most widely
+# supported by tooling. (3.1 also exists.)
+openapi: 3.0.3
+
+# Metadata about the API itself. Shown in docs tools like Swagger UI.
+# `title` and `version` are required; `description` is optional.
+info:
+  title: Todo API
+  version: 1.0.0
+  description: Tiny sample API for testing Orval + MSW.
+
+# -----------------------------------------------------------------------------
+# paths: every endpoint in the API.
+# Each key is a URL path; under it, each HTTP method (get, post, put, delete...)
+# is one "operation".
+# -----------------------------------------------------------------------------
+paths:
+  /todos:
+    # GET /todos -> returns all todos
+    get:
+      # operationId: a unique name for this operation. Orval uses it to name
+      # the generated code, e.g. a `listTodos()` fetch function and a
+      # `useListTodos()` React Query hook. Pick names you'd want to type.
+      operationId: listTodos
+      # Short human-readable label (shows in docs, often in generated JSDoc).
+      summary: List all todos
+      # tags group operations. Orval can split output into one file per tag
+      # (output.mode: 'tags' or 'tags-split' in orval.config.ts).
+      tags: [todos]
+      # responses: keyed by HTTP status code. Quote the codes ('200') so YAML
+      # treats them as strings, which is what OpenAPI expects.
+      responses:
+        '200':
+          description: A list of todos # `description` is required on every response
+          content:
+            # The response body's media type, then its shape (`schema`).
+            application/json:
+              schema:
+                # An array whose items are Todo objects.
+                type: array
+                items:
+                  # $ref points to a reusable schema defined further down under
+                  # components/schemas. Orval turns it into a named TS type
+                  # (`Todo`) instead of an inline anonymous type.
+                  $ref: '#/components/schemas/Todo'
+
+    # POST /todos -> creates a todo
+    post:
+      # Because this is a POST, Orval generates a mutation hook
+      # (`useCreateTodo()`) instead of a query hook.
+      operationId: createTodo
+      summary: Create a todo
+      tags: [todos]
+      # requestBody: what the client sends. Its schema becomes the type of the
+      # data you pass to the mutation, e.g. mutate({ data: { title: '...' } }).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              # The client only sends a title; the server assigns id/done.
+              $ref: '#/components/schemas/NewTodo'
+      responses:
+        # 201 Created is the conventional status for a successful POST.
+        '201':
+          description: The created todo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+
+  # {id} in the path is a path parameter, declared under `parameters` below.
+  /todos/{id}:
+    # GET /todos/{id} -> returns one todo
+    get:
+      operationId: getTodo
+      summary: Get a single todo
+      tags: [todos]
+      parameters:
+        - name: id # must match the {id} in the path
+          in: path # where it lives: path | query | header | cookie
+          required: true # path params must always be required: true
+          schema:
+            type: integer
+      # The generated function/hook takes it as an argument: useGetTodo(id).
+      responses:
+        '200':
+          description: The todo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        # A response with no `content` means "no body", just a status code.
+        '404':
+          description: Todo not found
+
+# -----------------------------------------------------------------------------
+# components: reusable pieces, referenced elsewhere with $ref.
+# schemas are the data shapes. Orval generates one TypeScript type per schema
+# (e.g. `export interface Todo { id: number; title: string; done: boolean }`).
+# -----------------------------------------------------------------------------
+components:
+  schemas:
+    Todo:
+      type: object
+      # Properties listed in `required` become non-optional in TypeScript.
+      # Anything left out becomes optional (`title?: string`).
+      required: [id, title, done]
+      properties:
+        id:
+          type: integer # integer/number -> TS `number`
+          # `example` values document the field. Orval's generated mocks use
+          # random faker data by default, not these examples.
+          example: 1
+        title:
+          type: string
+          example: Try out Orval
+        done:
+          type: boolean
+          example: false
+
+    # Shape of the POST body: only what the client is allowed to send.
+    NewTodo:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          example: Set up MSW

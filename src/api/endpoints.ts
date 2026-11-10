@@ -123,6 +123,7 @@ export type ListTodosQueryResult = NonNullable<Awaited<ReturnType<typeof listTod
 export type ListTodosQueryError = unknown
 
 
+/** @summary List all todos */
 export function useListTodos<TData = Awaited<ReturnType<typeof listTodos>>, TError = unknown>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listTodos>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
@@ -133,6 +134,7 @@ export function useListTodos<TData = Awaited<ReturnType<typeof listTodos>>, TErr
       >, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** @summary List all todos */
 export function useListTodos<TData = Awaited<ReturnType<typeof listTodos>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listTodos>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
@@ -143,14 +145,12 @@ export function useListTodos<TData = Awaited<ReturnType<typeof listTodos>>, TErr
       >, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** @summary List all todos */
 export function useListTodos<TData = Awaited<ReturnType<typeof listTodos>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listTodos>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-/**
- * @summary List all todos
- */
-
+/** @summary List all todos */
 export function useListTodos<TData = Awaited<ReturnType<typeof listTodos>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listTodos>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient
@@ -262,9 +262,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
     export type CreateTodoMutationError = unknown
     export type CreateTodoMutationVariables = {data: NewTodo}
 
-    /**
- * @summary Create a todo
- */
+    /** @summary Create a todo */
 export const useCreateTodo = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createTodo>>, TError,CreateTodoMutationVariables, TContext>, fetch?: RequestInit}
  , queryClient?: QueryClient): UseMutationResult<
@@ -357,6 +355,7 @@ export type GetTodoQueryResult = NonNullable<Awaited<ReturnType<typeof getTodo>>
 export type GetTodoQueryError = void
 
 
+/** @summary Get a single todo */
 export function useGetTodo<TData = Awaited<ReturnType<typeof getTodo>>, TError = void>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTodo>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
@@ -367,6 +366,7 @@ export function useGetTodo<TData = Awaited<ReturnType<typeof getTodo>>, TError =
       >, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** @summary Get a single todo */
 export function useGetTodo<TData = Awaited<ReturnType<typeof getTodo>>, TError = void>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTodo>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
@@ -377,14 +377,12 @@ export function useGetTodo<TData = Awaited<ReturnType<typeof getTodo>>, TError =
       >, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/** @summary Get a single todo */
 export function useGetTodo<TData = Awaited<ReturnType<typeof getTodo>>, TError = void>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTodo>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-/**
- * @summary Get a single todo
- */
-
+/** @summary Get a single todo */
 export function useGetTodo<TData = Awaited<ReturnType<typeof getTodo>>, TError = void>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTodo>>, TError, TData>>, fetch?: RequestInit}
  , queryClient?: QueryClient

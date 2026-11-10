@@ -1,4 +1,6 @@
 # src/mocks
 
-MSW request handlers and the browser service worker setup will go here.
-The worker will be started in development before the app renders.
+Starts MSW in the browser using the handlers Orval generated in `src/api/endpoints.msw.ts`.
+
+`browser.ts` creates the worker. `src/main.tsx` starts it before React renders, but only when
+`VITE_USE_MOCKS=true` in `.env` and only in development.

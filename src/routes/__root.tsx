@@ -1,6 +1,7 @@
 import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Link, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { mocksEnabled } from '../lib/apiMode'
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   component: RootLayout,
@@ -14,7 +15,16 @@ function RootLayout() {
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
-          <span className="font-semibold">Orval Test</span>
+          <div className="flex items-center gap-2">
+            <span className="font-semibold">Orval Test</span>
+            <span
+              className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                mocksEnabled ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
+              }`}
+            >
+              {mocksEnabled ? 'Mock API' : 'Real API'}
+            </span>
+          </div>
           <nav className="flex gap-2">
             <Link
               to="/"

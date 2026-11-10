@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import "./index.css";
+import { mocksEnabled } from "./lib/apiMode";
 import { queryClient } from "./lib/queryClient";
 import { routeTree } from "./routeTree.gen";
 
@@ -14,7 +15,9 @@ const router = createRouter({
 });
 
 async function enableMocking() {
-  if (!import.meta.env.DEV) return;
+  // Set VITE_USE_MOCKS in .env: "true" = MSW mocks, "false" = real Express API.
+  // The inline DEV check lets the bundler drop MSW from production builds.
+  if (!import.meta.env.DEV || !mocksEnabled) return;
   const { worker } = await import("./mocks/browser");
   return worker.start();
 }
